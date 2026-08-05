@@ -49,8 +49,8 @@ Explanation: The last word is "joyboy" with length 6.
 
 **Language:** C++  
 **Runtime:** 0 ms (beats 100.00%)  
-**Memory:** 8.9 MB (beats 34.83%)  
-**Submitted:** 2026-08-05T22:41:11.592Z  
+**Memory:** 9 MB (beats 34.83%)  
+**Submitted:** 2026-08-05T22:41:57.386Z  
 
 ```cpp
 class Solution {
@@ -58,14 +58,12 @@ public:
     int lengthOfLastWord(string s) {
         int i = s.size() - 1;
         
-        // Skip trailing spaces
         while (i >= 0 && s[i] == ' ') {
             i--;
         }
         
         int len = 0;
-        
-        // Count characters of the last word
+       
         while (i >= 0 && s[i] != ' ') {
             len++;
             i--;
