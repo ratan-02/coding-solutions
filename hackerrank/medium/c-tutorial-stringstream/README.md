@@ -57,7 +57,7 @@ The length of $str$ is less than $8 \times 10^5$.
 **Language:** C++  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-05T22:57:08.509Z  
+**Submitted:** 2026-08-05T22:57:21.379Z  
 
 ```cpp
 #include <iostream>
