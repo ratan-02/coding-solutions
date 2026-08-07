@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int T;
+	cin >> T;
+	int X, Y;
+	while(T--){
+	    cin >> X >> Y ;
+	
+	int dub = X*3 ;
+	int tri = Y*2 ;
+	if(dub < tri){
+	    cout << dub << endl;
+	}
+	else{
+	   cout << tri << endl;
+	}
+	}
+	return 0;
+}
