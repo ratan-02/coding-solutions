@@ -2,15 +2,13 @@
 using namespace std;
 
 int main() {
-    int x, y;
-    cin >> x >> y;
-
-    if (x % 2 == 0 || x < y)
-        cout << "Yes";
-    else
-        cout << "No";
-
+    int l, r;
+    cin >> l >> r ;
+    if(abs(l-r) != 0){
+        cout << "YES" ;
+    }
+    else{
+        cout << "NO" ;
+    }
     return 0;
-    
-    
 }
