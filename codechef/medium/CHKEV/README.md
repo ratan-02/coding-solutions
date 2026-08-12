@@ -88,24 +88,25 @@ $6$ is even, so the answer is `Yes`.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T14:56:37.554Z  
+**Submitted:** 2026-08-12T15:05:27.255Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    int l, r;
-    cin >> l >> r ;
-    if(abs(l-r) != 0){
-        cout << "YES" ;
-    }
-    else{
-        cout << "NO" ;
-    }
-    return 0;
-}
+    int j,k;
+    cin >>j >> k;
 
+    if (j%2 == 0 || j<k)
+        cout << "Yes";
+    else
+        cout << "No";
+
+    return 0;
+    
+    
+}
 ```
 
 ---
