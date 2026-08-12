@@ -73,7 +73,7 @@ It can be verified that using fewer than two operations is not enough to make $N
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:13:45.441Z  
+**Submitted:** 2026-08-12T15:14:57.116Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -81,6 +81,7 @@ using namespace std;
 
 int main() {
 	int t;
+	cin >> t;
 	while(t--){
 	    int p;
 	    cin >> p;
