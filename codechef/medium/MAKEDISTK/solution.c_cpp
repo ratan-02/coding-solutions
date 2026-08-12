@@ -1,59 +1,62 @@
-#include <bits/stdc++.h>
-using namespace std;
+ #include <bits/stdc++.h>
+  using namespace std;
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+  int main() {
+      ios::sync_with_stdio(false);
+      cin.tie(nullptr);
 
-    int q;
-    cin >> q;
+      int test_cases;
+      cin >> test_cases;
 
-    while(q--) {
-        int z, u;
-        cin >> z >> u;
+      while (test_cases--) {
+          int length, limit;
+          cin >> length >> limit;
 
-        vector<long long> v(z);
+          vector<long long> values(length);
 
-        for(long long &x : v)
-            cin >> x;
+          for (long long &item : values)
+              cin >> item;
 
-        sort(v.begin(), v.end());
+          sort(values.begin(), values.end());
 
-        auto check = [&](long long r) {
-            long long p = v[0];
-            long long c = 0;
+          auto possible = [&](long long turns) {
+              long long previous = values[0];
+              long long required = 0;
 
-            for(int i = 1; i < z; i++) {
-                long long y = max(v[i], p + 1);
+              if (previous - values[0] > turns)
+                  return false;
 
-                if(y > v[i] + r)
-                    return false;
+              for (int pos = 1; pos < length; pos++) {
+                  long long chosen = max(values[pos], previous + 1);
 
-                c += y - v[i];
+                  if (chosen > values[pos] + turns)
+                      return false;
 
-                if(c > r * 1LL * u)
-                    return false;
+                  required += chosen - values[pos];
 
-                p = y;
-            }
+                  if (required > turns * 1LL * limit)
+                      return false;
 
-            return true;
-        };
+                  previous = chosen;
+              }
 
-        long long l = 0;
-        long long h = 1LL * z * z;
+              return required <= turns * 1LL * limit;
+          };
 
-        while(l < h) {
-            long long m = (l + h) / 2;
+          long long low = 0;
+          long long high = 1LL * length * length;
 
-            if(check(m))
-                h = m;
-            else
-                l = m + 1;
-        }
+          while (low < high) {
+              long long middle = (low + high) / 2;
 
-        cout << l << '\n';
-    }
+              if (possible(middle))
+                  high = middle;
+              else
+                  low = middle + 1;
+          }
 
-    return 0;
-}
+          cout << low << '\n';
+      }
+
+      return 0;
+  }
