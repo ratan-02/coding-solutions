@@ -69,17 +69,68 @@ One sequence of $3$ operations is as follows:
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:42:49.033Z  
+**Submitted:** 2026-08-12T15:43:55.471Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
+    int q;
+    cin >> q;
+
+    while(q--) {
+        int z, u;
+        cin >> z >> u;
+
+        vector<long long> v(z);
+
+        for(long long &x : v)
+            cin >> x;
+
+        sort(v.begin(), v.end());
+
+        auto check = [&](long long r) {
+            long long p = v[0];
+            long long c = 0;
+
+            for(int i = 1; i < z; i++) {
+                long long y = max(v[i], p + 1);
+
+                if(y > v[i] + r)
+                    return false;
+
+                c += y - v[i];
+
+                if(c > r * 1LL * u)
+                    return false;
+
+                p = y;
+            }
+
+            return true;
+        };
+
+        long long l = 0;
+        long long h = 1LL * z * z;
+
+        while(l < h) {
+            long long m = (l + h) / 2;
+
+            if(check(m))
+                h = m;
+            else
+                l = m + 1;
+        }
+
+        cout << l << '\n';
+    }
+
+    return 0;
 }
-
 ```
 
 ---
