@@ -69,7 +69,7 @@ One sequence of $3$ operations is as follows:
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:39:24.789Z  
+**Submitted:** 2026-08-12T15:42:49.033Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
