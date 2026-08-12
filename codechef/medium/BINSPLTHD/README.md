@@ -84,78 +84,96 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T16:21:58.224Z  
+**Submitted:** 2026-08-12T16:23:33.309Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
+unordered_map<string, string> F_MEMO;
 
-map<string, string> dp;
-
-bool check(string s) {
-    return (s.find('0') != string::npos) && (s.find('1') != string::npos);
+inline bool has_both(const string& s) {
+    return s.find('0') != string::npos && s.find('1') != string::npos;
 }
 
-string solve(string s) {
-    if (dp.count(s)) return dp[s];
+string compute_f_greedy(const string& s) {
+    if (F_MEMO.count(s)) return F_MEMO[s];
     
-    vector<string> nxt;
-    for (int i = 0; i < s.length() - 1; i++) {
-        if (s[i] == s[i+1]) continue;
+    int len = s.length();
+    string best = s;
+    
+    for (int i = 0; i < len - 1; ++i) {
+        if (s[i] == s[i + 1]) continue;
         
-        string pref = s.substr(0, i + 1);
-        string suff = s.substr(i + 1);
+        string left = s.substr(0, i + 1);
+        string right = s.substr(i + 1);
         
-        if (check(pref)) nxt.push_back(pref);
-        if (check(suff)) nxt.push_back(suff);
+        bool l_ok = has_both(left);
+        bool r_ok = has_both(right);
+        
+        if (l_ok || r_ok) {
+            string candidate;
+            if (l_ok && r_ok) {
+                string l_res = compute_f_greedy(left);
+                string r_res = compute_f_greedy(right);
+                candidate = (l_res < r_res) ? l_res : r_res;
+            } else if (l_ok) {
+                candidate = compute_f_greedy(left);
+            } else {
+                candidate = compute_f_greedy(right);
+            }
+            
+            best = min(best, candidate);
+        }
     }
     
-    if (nxt.empty()) {
-        dp[s] = s;
-        return s;
-    }
-    
-    string mn = s;
-    for (auto& x : nxt) {
-        string res = solve(x);
-        if (res < mn) mn = res;
-    }
-    
-    dp[s] = mn;
-    return mn;
+    return F_MEMO[s] = best;
 }
 
-int main() {
-    ios_base::sync_with_stdio(false); 
-    cin.tie(NULL);
+struct FlipVariant {
+    string data;
+};
+
+class BitStringOptimizer {
+    string original;
+    int n;
     
-    int t;
-    cin >> t;
+public:
+    BitStringOptimizer(const string& s) : original(s), n(s.length()) {}
     
-    while (t--) {
-        int n;
-        string s;
-        cin >> n >> s;
+    string get_result() {
+        string champion = compute_f_greedy(original);
         
-        dp.clear();
-        string mx = solve(s);
-        
-        for (int i = 0; i < n; i++) {
-            string cur = s;
-            for (int j = i; j < n; j++) {
-                if(cur[j] == '0') cur[j] = '1';
-                else cur[j] = '0';
+        for (int L = 0; L < n; ++L) {
+            string mutant = original;
+            for (int R = L; R < n; ++R) {
+                mutant[R] = (mutant[R] == '0') ? '1' : '0';
                 
-                dp.clear();
-                string temp = solve(cur);
-                
-                if (temp > mx) {
-                    mx = temp;
+                string variant_f = compute_f_greedy(mutant);
+                if (variant_f > champion) {
+                    champion = variant_f;
                 }
             }
         }
         
-        cout << mx << "\n";
+        return champion;
+    }
+};
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int teztz;
+    cin >> teztz;
+    
+    while (teztz--) {
+        int n;
+        string s;
+        cin >> n >> s;
+        
+        F_MEMO.clear();
+        BitStringOptimizer opt(s);
+        cout << opt.get_result() << "\n";
     }
     
     return 0;
