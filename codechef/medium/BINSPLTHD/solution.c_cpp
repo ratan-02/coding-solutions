@@ -1,37 +1,73 @@
 #include <bits/stdc++.h>
 using namespace std;
-using StateSet=set<string>;
-using ReductionPipeline=function<string(const string&)>;
-struct OperationEnvironment { map<string, string> reduction_cache;
-inline bool is_valid_partition(const string& segment) const noexcept {
-return (segment.find('0')!=string::npos) && (segment.find('1')!=string::npos); }
-  inline vector<string> extract_viable_continuations(const string& current) const {
-   vector<string> candidates; int len = current.length();
-    for(int split_point=0;split_point<len-1;++split_point){
-     if(current[split_point]==current[split_point+1])continue;
-  string prefix_segment = current.substr(0, split_point+1); string suffix_segment = current.substr(split_point+1);
-bool prefix_ok = is_valid_partition(prefix_segment); bool suffix_ok = is_valid_partition(suffix_segment);
-if(prefix_ok)candidates.push_back(prefix_segment);
-if(suffix_ok)candidates.push_back(suffix_segment);
- } return candidates; } };
-class UniversalBinaryOptimizer{
-private: OperationEnvironment env;
-ReductionPipeline build_reduction_engine() { return [this](const string& source) -> string {
-if(env.reduction_cache.count(source)){ return env.reduction_cache[source]; }
-vector<string> next_states = env.extract_viable_continuations(source);
-if(next_states.empty()){ env.reduction_cache[source]=source; return source; }
- string lexmin = source;
-for(const auto& candidate : next_states){ string reduced = build_reduction_engine()(candidate);
-lexmin = min(lexmin, reduced); } env.reduction_cache[source] = lexmin; return lexmin; }; }
-public: string execute(const string& input){ auto reducer = build_reduction_engine();
-string original_reduced = reducer(input); string champion = original_reduced;
-int dim=input.length();
-for(int start=0;start<dim;++start){ string mutated=input;
-for(int end=start;end<dim;++end){ mutated[end]=(mutated[end]=='0')?'1':'0';
-env.reduction_cache.clear(); string variant_reduced=reducer(mutated);
-if(variant_reduced>champion){champion=variant_reduced;} } } return champion; } };
+
+map<string, string> dp;
+
+bool check(string s) {
+    return (s.find('0') != string::npos) && (s.find('1') != string::npos);
+}
+
+string solve(string s) {
+    if (dp.count(s)) return dp[s];
+    
+    vector<string> nxt;
+    for (int i = 0; i < s.length() - 1; i++) {
+        if (s[i] == s[i+1]) continue;
+        
+        string pref = s.substr(0, i + 1);
+        string suff = s.substr(i + 1);
+        
+        if (check(pref)) nxt.push_back(pref);
+        if (check(suff)) nxt.push_back(suff);
+    }
+    
+    if (nxt.empty()) {
+        dp[s] = s;
+        return s;
+    }
+    
+    string mn = s;
+    for (auto& x : nxt) {
+        string res = solve(x);
+        if (res < mn) mn = res;
+    }
+    
+    dp[s] = mn;
+    return mn;
+}
+
 int main() {
-ios_base::sync_with_stdio(false); cin.tie(NULL);
-int teztz; cin>>teztz; while(teztz--) { int n; string s; cin>>n>>s;
-UniversalBinaryOptimizer optimizer; cout<<optimizer.execute(s)<<"\n"; }
-return 0; }
+    ios_base::sync_with_stdio(false); 
+    cin.tie(NULL);
+    
+    int t;
+    cin >> t;
+    
+    while (t--) {
+        int n;
+        string s;
+        cin >> n >> s;
+        
+        dp.clear();
+        string mx = solve(s);
+        
+        for (int i = 0; i < n; i++) {
+            string cur = s;
+            for (int j = i; j < n; j++) {
+                if(cur[j] == '0') cur[j] = '1';
+                else cur[j] = '0';
+                
+                dp.clear();
+                string temp = solve(cur);
+                
+                if (temp > mx) {
+                    mx = temp;
+                }
+            }
+        }
+        
+        cout << mx << "\n";
+    }
+    
+    return 0;
+}
