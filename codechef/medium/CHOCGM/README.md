@@ -76,38 +76,33 @@ Bob can thus eat all the chocolates without ever giving Alice a turn - so Alice 
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:24:44.548Z  
+**Submitted:** 2026-08-12T15:30:31.760Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 	int t;
 	cin>> t;
 	while(t--){
 	    int n;
 	    cin >> n;
-	    int sum = 0;
-	    bool odd = false;
+	    int sum = 0, ob = 0;
 	    for(int i = 0; i < n; i++){
 	        int x;
 	        cin>> x;
 	        sum = sum+x;
-	        if(x%2!=0){
-	            odd= true;
-	        }
+	        ob += (x%2);
 	    }
-	        if(sum%2 !=0){
-	            cout << 0 << endl;
-	        }
-	        else if(odd){
-	            cout << sum-1 <<endl;
-	        }
-	        else{
-	            cout<< sum<< endl;
-	        }
-	    
+	    if(sum%2==0){
+	    cout << sum -ob/2 << endl;
+	    }
+	    else{
+	        cout << ob/2 << endl;
+	    }
 	}
 	return 0;
 }
