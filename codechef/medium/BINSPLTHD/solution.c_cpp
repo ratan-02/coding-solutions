@@ -1,72 +1,124 @@
 #include <bits/stdc++.h>
 using namespace std;
-unordered_map<string, string> F_MEMO;
 
-inline bool has_both(const string& s) {
-    return s.find('0') != string::npos && s.find('1') != string::npos;
-}
+// ============================================================================
+// CHAMPIONSHIP: Tuple-based State Machine + Declarative Computation Graph
+// ============================================================================
+using StateDescriptor = tuple<string, int, int>;  // (string, depth, sequence_id)
+using ComputationNode = function<string(const string&)>;
+using StateTransition = map<string, string>;
 
-string compute_f_greedy(const string& s) {
-    if (F_MEMO.count(s)) return F_MEMO[s];
+class DeclarativeComputationGraph {
+private:
+    StateTransition memoization_layer;
     
-    int len = s.length();
-    string best = s;
+    // Declarative validation predicates
+    static constexpr auto validate_char_presence = [](const string& s, char target) {
+        return s.find(target) != string::npos;
+    };
     
-    for (int i = 0; i < len - 1; ++i) {
-        if (s[i] == s[i + 1]) continue;
-        
-        string left = s.substr(0, i + 1);
-        string right = s.substr(i + 1);
-        
-        bool l_ok = has_both(left);
-        bool r_ok = has_both(right);
-        
-        if (l_ok || r_ok) {
-            string candidate;
-            if (l_ok && r_ok) {
-                string l_res = compute_f_greedy(left);
-                string r_res = compute_f_greedy(right);
-                candidate = (l_res < r_res) ? l_res : r_res;
-            } else if (l_ok) {
-                candidate = compute_f_greedy(left);
-            } else {
-                candidate = compute_f_greedy(right);
-            }
-            
-            best = min(best, candidate);
-        }
-    }
-    
-    return F_MEMO[s] = best;
-}
-
-struct FlipVariant {
-    string data;
-};
-
-class BitStringOptimizer {
-    string original;
-    int n;
+    static constexpr auto segment_is_reducible = [](const string& s) {
+        return validate_char_presence(s, '0') && validate_char_presence(s, '1');
+    };
     
 public:
-    BitStringOptimizer(const string& s) : original(s), n(s.length()) {}
-    
-    string get_result() {
-        string champion = compute_f_greedy(original);
-        
-        for (int L = 0; L < n; ++L) {
-            string mutant = original;
-            for (int R = L; R < n; ++R) {
-                mutant[R] = (mutant[R] == '0') ? '1' : '0';
+    ComputationNode build_recursive_f_engine() {
+        return [this](const string& input) -> string {
+            if (memoization_layer.count(input)) {
+                return memoization_layer[input];
+            }
+            
+            int len = input.length();
+            string accumulator = input;
+            
+            // Iterate through all split boundaries
+            for (int boundary = 0; boundary < len - 1; ++boundary) {
+                // Boundary condition: adjacent characters must differ
+                if (input[boundary] == input[boundary + 1]) continue;
                 
-                string variant_f = compute_f_greedy(mutant);
-                if (variant_f > champion) {
-                    champion = variant_f;
+                string left_segment = input.substr(0, boundary + 1);
+                string right_segment = input.substr(boundary + 1);
+                
+                bool left_reducible = segment_is_reducible(left_segment);
+                bool right_reducible = segment_is_reducible(right_segment);
+                
+                // Apply reduction rules
+                if (!left_reducible && !right_reducible) continue;
+                
+                auto recursive_engine = build_recursive_f_engine();
+                
+                string left_result = left_reducible ? recursive_engine(left_segment) : "";
+                string right_result = right_reducible ? recursive_engine(right_segment) : "";
+                
+                string selected = (left_reducible && right_reducible) 
+                    ? min(left_result, right_result)
+                    : (left_reducible ? left_result : right_result);
+                
+                accumulator = min(accumulator, selected);
+            }
+            
+            memoization_layer[input] = accumulator;
+            return accumulator;
+        };
+    }
+    
+    string invoke(const string& source) {
+        auto engine = build_recursive_f_engine();
+        return engine(source);
+    }
+    
+    void clear_state() {
+        memoization_layer.clear();
+    }
+};
+
+// ============================================================================
+// FLIP COORDINATE ENUMERATOR
+// ============================================================================
+class RangeFlipEnumerator {
+private:
+    const string& original;
+    DeclarativeComputationGraph& graph;
+    int dimension;
+    
+public:
+    RangeFlipEnumerator(const string& s, DeclarativeComputationGraph& g) 
+        : original(s), graph(g), dimension(s.length()) {}
+    
+    string enumerate_and_optimize() {
+        string optimum = graph.invoke(original);
+        
+        // Enumerate all O(N²) flip ranges
+        for (int start_idx = 0; start_idx < dimension; ++start_idx) {
+            string mutable_copy = original;
+            
+            for (int end_idx = start_idx; end_idx < dimension; ++end_idx) {
+                // Flip bit at position end_idx
+                mutable_copy[end_idx] = (mutable_copy[end_idx] == '0') ? '1' : '0';
+                
+                graph.clear_state();
+                string variant_result = graph.invoke(mutable_copy);
+                
+                // Maximize lexicographically
+                if (variant_result > optimum) {
+                    optimum = variant_result;
                 }
             }
         }
         
-        return champion;
+        return optimum;
+    }
+};
+
+// ============================================================================
+// ORCHESTRATION LAYER
+// ============================================================================
+class BinaryStringMasterSolver {
+public:
+    string orchestrate(const string& input_string) {
+        DeclarativeComputationGraph computation_graph;
+        RangeFlipEnumerator enumerator(input_string, computation_graph);
+        return enumerator.enumerate_and_optimize();
     }
 };
 
@@ -82,9 +134,8 @@ int main() {
         string s;
         cin >> n >> s;
         
-        F_MEMO.clear();
-        BitStringOptimizer opt(s);
-        cout << opt.get_result() << "\n";
+        BinaryStringMasterSolver master_solver;
+        cout << master_solver.orchestrate(s) << "\n";
     }
     
     return 0;
