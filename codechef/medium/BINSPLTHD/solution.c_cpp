@@ -1,117 +1,116 @@
 #include <bits/stdc++.h>
 using namespace std;
+using StateDescriptor = tuple<string, int, int>;  // (string, depth, sequence_id)
+using ComputationNode = function<string(const string&)>;
+using StateTransition = map<string, string>;
 
-// ============================================================================
-// ELITE IMPLEMENTATION: Visitor Pattern + Explicit State Transitions
-// ============================================================================
-
-// Forward declaration
-class ReductionVisitor;
-
-using VisitorFunction = function<string(ReductionVisitor&, const string&)>;
-
-class ReductionVisitor {
-public:
-    map<string, string> visit_cache;
+class DeclarativeComputationGraph {
+private:
+    StateTransition memoization_layer;
     
-    struct SplitOpportunity {
-        int position;
-        string left_part;
-        string right_part;
-        bool left_valid;
-        bool right_valid;
+    // Declarative validation predicates
+    static constexpr auto validate_char_presence = [](const string& s, char target) {
+        return s.find(target) != string::npos;
     };
     
-    vector<SplitOpportunity> discover_opportunities(const string& s) {
-        vector<SplitOpportunity> opportunities;
-        
-        for (int pos = 0; pos < (int)s.length() - 1; ++pos) {
-            if (s[pos] == s[pos + 1]) continue;
-            
-            string left = s.substr(0, pos + 1);
-            string right = s.substr(pos + 1);
-            
-            bool left_ok = (left.find('0') != string::npos && left.find('1') != string::npos);
-            bool right_ok = (right.find('0') != string::npos && right.find('1') != string::npos);
-            
-            if (left_ok || right_ok) {
-                opportunities.push_back({pos, left, right, left_ok, right_ok});
-            }
-        }
-        
-        return opportunities;
-    }
-    
-    string visit(const string& state) {
-        if (visit_cache.count(state)) {
-            return visit_cache[state];
-        }
-        
-        auto opportunities = discover_opportunities(state);
-        
-        if (opportunities.empty()) {
-            visit_cache[state] = state;
-            return state;
-        }
-        
-        string best_outcome = state;
-        
-        for (const auto& opp : opportunities) {
-            string candidate;
-            
-            if (opp.left_valid && opp.right_valid) {
-                string left_reduction = visit(opp.left_part);
-                string right_reduction = visit(opp.right_part);
-                candidate = min(left_reduction, right_reduction);
-            } else if (opp.left_valid) {
-                candidate = visit(opp.left_part);
-            } else {
-                candidate = visit(opp.right_part);
-            }
-            
-            best_outcome = min(best_outcome, candidate);
-        }
-        
-        visit_cache[state] = best_outcome;
-        return best_outcome;
-    }
-};
-
-// ============================================================================
-// BIT MUTATION ORCHESTRATOR
-// ============================================================================
-class BitMutationOrchestrator {
-private:
-    string source_string;
-    ReductionVisitor visitor;
+    static constexpr auto segment_is_reducible = [](const string& s) {
+        return validate_char_presence(s, '0') && validate_char_presence(s, '1');
+    };
     
 public:
-    BitMutationOrchestrator(const string& s) : source_string(s) {}
-    
-    string execute() {
-        string peak_value = visitor.visit(source_string);
-        
-        int n = source_string.length();
-        
-        // Generate all bit mutations
-        for (int L = 0; L < n; ++L) {
-            string working_copy = source_string;
-            
-            for (int R = L; R < n; ++R) {
-                working_copy[R] = (working_copy[R] == '0') ? '1' : '0';
-                
-                visitor.visit_cache.clear();
-                string mutated_value = visitor.visit(working_copy);
-                
-                peak_value = max(peak_value, mutated_value);
+    ComputationNode build_recursive_f_engine() {
+        return [this](const string& input) -> string {
+            if (memoization_layer.count(input)) {
+                return memoization_layer[input];
             }
-        }
-        
-        return peak_value;
+            
+            int len = input.length();
+            string accumulator = input;
+            
+            // Iterate through all split boundaries
+            for (int boundary = 0; boundary < len - 1; ++boundary) {
+                // Boundary condition: adjacent characters must differ
+                if (input[boundary] == input[boundary + 1]) continue;
+                
+                string left_segment = input.substr(0, boundary + 1);
+                string right_segment = input.substr(boundary + 1);
+                
+                bool left_reducible = segment_is_reducible(left_segment);
+                bool right_reducible = segment_is_reducible(right_segment);
+                
+                // Apply reduction rules
+                if (!left_reducible && !right_reducible) continue;
+                
+                auto recursive_engine = build_recursive_f_engine();
+                
+                string left_result = left_reducible ? recursive_engine(left_segment) : "";
+                string right_result = right_reducible ? recursive_engine(right_segment) : "";
+                
+                string selected = (left_reducible && right_reducible) 
+                    ? min(left_result, right_result)
+                    : (left_reducible ? left_result : right_result);
+                
+                accumulator = min(accumulator, selected);
+            }
+            
+            memoization_layer[input] = accumulator;
+            return accumulator;
+        };
+    }
+    
+    string invoke(const string& source) {
+        auto engine = build_recursive_f_engine();
+        return engine(source);
+    }
+    
+    void clear_state() {
+        memoization_layer.clear();
     }
 };
 
-// ==================================================================
+class RangeFlipEnumerator {
+private:
+    const string& original;
+    DeclarativeComputationGraph& graph;
+    int dimension;
+    
+public:
+    RangeFlipEnumerator(const string& s, DeclarativeComputationGraph& g) 
+        : original(s), graph(g), dimension(s.length()) {}
+    
+    string enumerate_and_optimize() {
+        string optimum = graph.invoke(original);
+        
+        // Enumerate all O(N²) flip ranges
+        for (int start_idx = 0; start_idx < dimension; ++start_idx) {
+            string mutable_copy = original;
+            
+            for (int end_idx = start_idx; end_idx < dimension; ++end_idx) {
+                // Flip bit at position end_idx
+                mutable_copy[end_idx] = (mutable_copy[end_idx] == '0') ? '1' : '0';
+                
+                graph.clear_state();
+                string variant_result = graph.invoke(mutable_copy);
+                
+                // Maximize lexicographically
+                if (variant_result > optimum) {
+                    optimum = variant_result;
+                }
+            }
+        }
+        
+        return optimum;
+    }
+};
+
+public:
+    string orchestrate(const string& input_string) {
+        DeclarativeComputationGraph computation_graph;
+        RangeFlipEnumerator enumerator(input_string, computation_graph);
+        return enumerator.enumerate_and_optimize();
+    }
+};
+
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -124,8 +123,8 @@ int main() {
         string s;
         cin >> n >> s;
         
-        BitMutationOrchestrator orchestrator(s);
-        cout << orchestrator.execute() << "\n";
+        BinaryStringMasterSolver master_solver;
+        cout << master_solver.orchestrate(s) << "\n";
     }
     
     return 0;
