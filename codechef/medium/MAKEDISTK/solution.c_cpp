@@ -1,7 +1,62 @@
-#include <bits/stdc++.h>
-using namespace std;
+ #include <bits/stdc++.h>
+  using namespace std;
 
-int main() {
-	// your code goes here
+  int main() {
+      ios::sync_with_stdio(false);
+      cin.tie(nullptr);
 
-}
+      int test_cases;
+      cin >> test_cases;
+
+      while (test_cases--) {
+          int length, limit;
+          cin >> length >> limit;
+
+          vector<long long> values(length);
+
+          for (long long &item : values)
+              cin >> item;
+
+          sort(values.begin(), values.end());
+
+          auto possible = [&](long long turns) {
+              long long previous = values[0];
+              long long required = 0;
+
+              if (previous - values[0] > turns)
+                  return false;
+
+              for (int pos = 1; pos < length; pos++) {
+                  long long chosen = max(values[pos], previous + 1);
+
+                  if (chosen > values[pos] + turns)
+                      return false;
+
+                  required += chosen - values[pos];
+
+                  if (required > turns * 1LL * limit)
+                      return false;
+
+                  previous = chosen;
+              }
+
+              return required <= turns * 1LL * limit;
+          };
+
+          long long low = 0;
+          long long high = 1LL * length * length;
+
+          while (low < high) {
+              long long middle = (low + high) / 2;
+
+              if (possible(middle))
+                  high = middle;
+              else
+                  low = middle + 1;
+          }
+
+          cout << low << '\n';
+      }
+
+      return 0;
+  }
