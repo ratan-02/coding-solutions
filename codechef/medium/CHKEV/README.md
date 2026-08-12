@@ -88,7 +88,7 @@ $6$ is even, so the answer is `Yes`.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T14:56:30.251Z  
+**Submitted:** 2026-08-12T14:56:37.554Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
