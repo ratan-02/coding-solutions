@@ -84,17 +84,72 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:57:16.574Z  
+**Submitted:** 2026-08-12T16:10:44.580Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int q;
+    cin >> q;
 
+    while(q--) {
+        int w;
+        string s;
+        cin >> w >> s;
+
+        vector<pair<char,int>> v;
+
+        for(char c : s) {
+            if(v.empty() || v.back().first != c)
+                v.push_back({c,1});
+            else
+                v.back().second++;
+        }
+
+        if(v.size() <= 2) {
+            cout << s << endl;
+            continue;
+        }
+
+        int p = -1;
+
+        for(int i = 0; i + 1 < v.size(); i++) {
+            if(v[i].first == '0') {
+                if(p == -1 ||
+                   v[i].second > v[p].second ||
+                   (v[i].second == v[p].second &&
+                    v[i+1].second < v[p+1].second)) {
+                    p = i;
+                }
+            }
+        }
+
+        if(p == -1) {
+            for(int i = 0; i + 1 < v.size(); i++) {
+                if(p == -1 ||
+                   v[i].second < v[p].second ||
+                   (v[i].second == v[p].second &&
+                    v[i+1].second < v[p+1].second)) {
+                    p = i;
+                }
+            }
+        }
+
+        string ans = "";
+
+        for(int i = 0; i < v[p].second; i++)
+            ans += v[p].first;
+
+        for(int i = 0; i < v[p+1].second; i++)
+            ans += v[p+1].first;
+
+        cout << ans << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
