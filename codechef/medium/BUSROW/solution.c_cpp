@@ -2,5 +2,17 @@
 using namespace std;
 
 int main() {
+    int t;
+    cin >> t;
     
+    while(t--){
+        int b, c, d;
+        cin >> b >> c >> d ;
+        
+        int r = (d-1) / c + 1;
+        int f = r;
+        int e = b - r+1;
+        cout << min(f, e) <<endl;
+    }
+    return 0;
 }
