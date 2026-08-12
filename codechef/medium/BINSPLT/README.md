@@ -72,17 +72,70 @@ Keep any one copy; the final string is $01$ which is optimal.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:31:13.577Z  
+**Submitted:** 2026-08-12T15:38:54.302Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
+    int t;
+    cin >> t;
+
+    while(t--) {
+        int n;
+        string s;
+        cin >> n >> s;
+
+        vector<pair<char,int>> v;
+
+        for(char c : s) {
+            if(v.empty() || v.back().first != c)
+                v.push_back({c, 1});
+            else
+                v.back().second++;
+        }
+
+        if(v.size() == 1) {
+            cout << s << '\n';
+            continue;
+        }
+
+        int pos = -1;
+
+        for(int i = 0; i + 1 < v.size(); i++) {
+            if(v[i].first != '0')
+                continue;
+
+            if(pos == -1 ||
+               v[i].second > v[pos].second ||
+               (v[i].second == v[pos].second &&
+                v[i + 1].second < v[pos + 1].second)) {
+                pos = i;
+            }
+        }
+
+        if(pos == -1) {
+            for(int i = 0; i + 1 < v.size(); i++) {
+                if(pos == -1 ||
+                   v[i].second < v[pos].second ||
+                   (v[i].second == v[pos].second &&
+                    v[i + 1].second < v[pos + 1].second)) {
+                    pos = i;
+                }
+            }
+        }
+
+        cout << string(v[pos].second, v[pos].first)
+             << string(v[pos + 1].second, v[pos + 1].first)
+             << '\n';
+    }
+
+    return 0;
 }
-
 ```
 
 ---
