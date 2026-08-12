@@ -84,70 +84,131 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T16:10:44.580Z  
+**Submitted:** 2026-08-12T16:14:44.567Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    int q;
-    cin >> q;
+typedef function<string(const string&)> ReducerFunc;
+typedef map<string, string> MemoCache;
 
-    while(q--) {
-        int w;
-        string s;
-        cin >> w >> s;
-
-        vector<pair<char,int>> v;
-
-        for(char c : s) {
-            if(v.empty() || v.back().first != c)
-                v.push_back({c,1});
-            else
-                v.back().second++;
+class BinarySplitSolver {
+private:
+    MemoCache reduction_memo;
+    string get_best_continuation(const string& s, int split_idx) {
+        string left = s.substr(0, split_idx + 1);
+        string right = s.substr(split_idx + 1);
+        
+        bool left_valid = (left.find('0') != string::npos) && (left.find('1') != string::npos);
+        bool right_valid = (right.find('0') != string::npos) && (right.find('1') != string::npos);
+        
+        if (left_valid && right_valid) {
+            string left_result = compute_f_iterative(left);
+            string right_result = compute_f_iterative(right);
+            return (left_result < right_result) ? left_result : right_result;
+        } else if (left_valid) {
+            return compute_f_iterative(left);
+        } else if (right_valid) {
+            return compute_f_iterative(right);
         }
-
-        if(v.size() <= 2) {
-            cout << s << endl;
-            continue;
-        }
-
-        int p = -1;
-
-        for(int i = 0; i + 1 < v.size(); i++) {
-            if(v[i].first == '0') {
-                if(p == -1 ||
-                   v[i].second > v[p].second ||
-                   (v[i].second == v[p].second &&
-                    v[i+1].second < v[p+1].second)) {
-                    p = i;
-                }
+        return "";
+    }
+    
+    auto find_first_valid_split(const string& s) -> pair<int, string> {
+        for (int i = 0; i < (int)s.length() - 1; i++) {
+            if (s[i] == s[i+1]) continue;
+            
+            string result = get_best_continuation(s, i);
+            if (!result.empty()) {
+                return {i, result};
             }
         }
-
-        if(p == -1) {
-            for(int i = 0; i + 1 < v.size(); i++) {
-                if(p == -1 ||
-                   v[i].second < v[p].second ||
-                   (v[i].second == v[p].second &&
-                    v[i+1].second < v[p+1].second)) {
-                    p = i;
-                }
-            }
-        }
-
-        string ans = "";
-
-        for(int i = 0; i < v[p].second; i++)
-            ans += v[p].first;
-
-        for(int i = 0; i < v[p+1].second; i++)
-            ans += v[p+1].first;
-
-        cout << ans << endl;
+        return {-1, ""};
     }
 
+public:
+    string compute_f_recursive(const string& s) {
+        if (reduction_memo.count(s)) {
+            return reduction_memo[s];
+        }
+        
+        auto [split_idx, result] = find_first_valid_split(s);
+        
+        if (split_idx == -1 || result.empty()) {
+            reduction_memo[s] = s;
+            return s;
+        }
+        
+        reduction_memo[s] = result;
+        return result;
+    }
+    
+    string compute_f_iterative(const string& s) {
+        return compute_f_recursive(s);
+    }
+
+    struct FlipDescriptor {
+        int L, R;
+        string flipped_result;
+    };
+    
+    auto generate_all_flips(const string& original) -> vector<FlipDescriptor> {
+        vector<FlipDescriptor> flips;
+        int n = original.length();
+        
+        flips.push_back({-1, -1, compute_f_iterative(original)});
+        
+        for (int L = 0; L < n; L++) {
+            string current = original;
+            for (int R = L; R < n; R++) {
+                current[R] = (current[R] == '0') ? '1' : '0';
+                
+                string f_result = compute_f_iterative(current);
+                flips.push_back({L, R, f_result});
+            }
+        }
+        
+        return flips;
+    }
+
+    string solve(const string& input_string) {
+        auto all_flips = generate_all_flips(input_string);
+        
+        auto lex_max_compare = [](const string& a, const string& b) -> bool {
+            if (a.length() != b.length()) {
+                return a.length() > b.length();
+            }
+            return a > b;
+        };
+        
+        string best = all_flips[0].flipped_result;
+        for (const auto& descriptor : all_flips) {
+            if (lex_max_compare(descriptor.flipped_result, best)) {
+                best = descriptor.flipped_result;
+            }
+        }
+        
+        return best;
+    }
+};
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int teztz;
+    cin >> teztz;
+    
+    while (teztz--) {
+        int n;
+        string s;
+        cin >> n >> s;
+        
+        BinarySplitSolver solver;
+        cout << solver.solve(s) << "\n";
+    }
+    
     return 0;
 }
 ```
