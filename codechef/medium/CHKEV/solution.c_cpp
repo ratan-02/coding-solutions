@@ -2,13 +2,15 @@
 using namespace std;
 
 int main() {
-    int l, r;
-    cin >> l >> r ;
-    if(abs(l-r) != 0){
-        cout << "YES" ;
-    }
-    else{
-        cout << "NO" ;
-    }
+    int j,k;
+    cin >>j >> k;
+
+    if (j%2 == 0 || j<k)
+        cout << "Yes";
+    else
+        cout << "No";
+
     return 0;
+    
+    
 }
