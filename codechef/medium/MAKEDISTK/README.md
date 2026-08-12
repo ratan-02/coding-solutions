@@ -69,71 +69,68 @@ One sequence of $3$ operations is as follows:
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:42:56.031Z  
+**Submitted:** 2026-08-12T15:43:48.325Z  
 
 ```c_cpp
- #include <bits/stdc++.h>
-  using namespace std;
+#include <bits/stdc++.h>
+using namespace std;
 
-  int main() {
-      ios::sync_with_stdio(false);
-      cin.tie(nullptr);
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-      int test_cases;
-      cin >> test_cases;
+    int q;
+    cin >> q;
 
-      while (test_cases--) {
-          int length, limit;
-          cin >> length >> limit;
+    while(q--) {
+        int z, u;
+        cin >> z >> u;
 
-          vector<long long> values(length);
+        vector<long long> v(z);
 
-          for (long long &item : values)
-              cin >> item;
+        for(long long &x : v)
+            cin >> x;
 
-          sort(values.begin(), values.end());
+        sort(v.begin(), v.end());
 
-          auto possible = [&](long long turns) {
-              long long previous = values[0];
-              long long required = 0;
+        auto check = [&](long long r) {
+            long long p = v[0];
+            long long c = 0;
 
-              if (previous - values[0] > turns)
-                  return false;
+            for(int i = 1; i < z; i++) {
+                long long y = max(v[i], p + 1);
 
-              for (int pos = 1; pos < length; pos++) {
-                  long long chosen = max(values[pos], previous + 1);
+                if(y > v[i] + r)
+                    return false;
 
-                  if (chosen > values[pos] + turns)
-                      return false;
+                c += y - v[i];
 
-                  required += chosen - values[pos];
+                if(c > r * 1LL * u)
+                    return false;
 
-                  if (required > turns * 1LL * limit)
-                      return false;
+                p = y;
+            }
 
-                  previous = chosen;
-              }
+            return true;
+        };
 
-              return required <= turns * 1LL * limit;
-          };
+        long long l = 0;
+        long long h = 1LL * z * z;
 
-          long long low = 0;
-          long long high = 1LL * length * length;
+        while(l < h) {
+            long long m = (l + h) / 2;
 
-          while (low < high) {
-              long long middle = (low + high) / 2;
+            if(check(m))
+                h = m;
+            else
+                l = m + 1;
+        }
 
-              if (possible(middle))
-                  high = middle;
-              else
-                  low = middle + 1;
-          }
+        cout << l << '\n';
+    }
 
-          cout << low << '\n';
-      }
-
-      return 0;
-  }
+    return 0;
+}
 ```
 
 ---
