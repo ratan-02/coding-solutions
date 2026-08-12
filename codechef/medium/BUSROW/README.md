@@ -74,14 +74,26 @@ It's optimal to enter from the back, and walk through rows $6, 5, 4$ to reach it
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:00:14.603Z  
+**Submitted:** 2026-08-12T15:04:10.977Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    int t;
+    cin >> t;
     
+    while(t--){
+        int b, c, d;
+        cin >> b >> c >> d ;
+        
+        int r = (d-1) / c + 1;
+        int f = r;
+        int e = b - r+1;
+        cout << min(f, e) <<endl;
+    }
+    return 0;
 }
 
 ```
