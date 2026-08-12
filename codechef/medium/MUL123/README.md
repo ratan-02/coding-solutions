@@ -73,15 +73,34 @@ It can be verified that using fewer than two operations is not enough to make $N
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-12T15:07:44.793Z  
+**Submitted:** 2026-08-12T15:13:45.441Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
-
+	int t;
+	while(t--){
+	    int p;
+	    cin >> p;
+	    if(p%3== 0){
+	        cout <<0 << endl;
+	    }
+	    else if((p+1)%3 ==0){
+	        cout <<1<< endl;
+	    }
+	    else{
+	        int x =(p/5 + 1)*5;
+	        if(x%3 == 0){
+	           cout << 1 <<endl; 
+	        }
+	        else{
+	            cout << 2<< endl;
+	        }
+	    }
+	}
+	return 0;
 }
 
 ```
