@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int T;
+    cin >> T;
+
+    while (T--) {
+        int N;
+        cin >> N;
+
+        int income = N;
+        int tax = 0;
+
+        if (N > 1500000) {
+            tax += (N - 1500000) * 30 / 100;
+            N = 1500000;
+        }
+
+        if (N > 1250000) {
+            tax += (N - 1250000) * 25 / 100;
+            N = 1250000;
+        }
+
+        if (N > 1000000) {
+            tax += (N - 1000000) * 20 / 100;
+            N = 1000000;
+        }
+
+        if (N > 750000) {
+            tax += (N - 750000) * 15 / 100;
+            N = 750000;
+        }
+
+        if (N > 500000) {
+            tax += (N - 500000) * 10 / 100;
+            N = 500000;
+        }
+
+        if (N > 250000) {
+            tax += (N - 250000) * 5 / 100;
+        }
+
+        cout << income - tax << '\n';
+    }
+
+    return 0;
+}
