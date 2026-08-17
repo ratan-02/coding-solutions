@@ -44,9 +44,9 @@ recentCounter.ping(3002);  // requests = [1, 100, 3001, 3002], range is [2,3002]
 ## Solution
 
 **Language:** C++  
-**Runtime:** 18 ms (beats 49.59%)  
-**Memory:** 64.3 MB (beats 17.37%)  
-**Submitted:** 2026-08-17T04:00:17.269Z  
+**Runtime:** 0 ms (beats 100.00%)  
+**Memory:** 64.1 MB (beats 96.22%)  
+**Submitted:** 2026-08-17T04:00:39.133Z  
 
 ```cpp
 class RecentCounter {
