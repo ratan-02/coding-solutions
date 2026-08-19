@@ -61,17 +61,77 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T15:45:16.575Z  
+**Submitted:** 2026-08-19T16:00:56.637Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
+#define MOD 998244353
+
 int main() {
-	// your code goes here
+    int a;
+    cin >> a;
 
+    while (a--) {
+        int c;
+        cin >> c;
+
+        vector<int> e(c + 1, 0);
+
+        for (int g = 0; g < c; g++) {
+            int i;
+            cin >> i;
+            e[i]++;
+        }
+
+        long long k = 0;
+        long long m = 1;
+
+        for (int n = 0; n <= c; n++) {
+            if (e[n] == 0) {
+                if (n == 0) {
+                    k += 1;
+                }
+                break;
+            }
+
+            m = m * (1LL * (1 << min(e[n], 30))) % MOD;
+        }
+
+        long long p = 1;
+
+        for (int n = 0; n <= c; n++) {
+            if (e[n] == 0)
+                break;
+
+            p = p * (1LL * (e[n] + 1)) % MOD;
+        }
+
+        k = 0;
+
+        for (int n = 0; n <= c; n++) {
+            if (e[n] == 0)
+                break;
+
+            long long q = 1;
+
+            for (int r = 0; r <= n; r++) {
+                if (e[r] == 0) {
+                    q = 0;
+                    break;
+                }
+                q = q * ((1LL << min(e[r], 30)) - 1) % MOD;
+            }
+
+            k = (k + q) % MOD;
+        }
+
+        cout << k << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
