@@ -1,7 +1,126 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-	// your code goes here
+#define MOD 998244353
 
+long long power(long long a, long long b) {
+    long long c = 1;
+
+    while (b > 0) {
+        if (b & 1)
+            c = c * a % MOD;
+
+        a = a * a % MOD;
+        b >>= 1;
+    }
+
+    return c;
+}
+
+int main() {
+    int a;
+    cin >> a;
+
+    while (a--) {
+        int c;
+        cin >> c;
+
+        vector<int> e(c);
+
+        for (int g = 0; g < c; g++)
+            cin >> e[g];
+
+        int i = 0;
+        int k = 0;
+
+        for (int g = 0; g < c; g++) {
+            if (e[g] == 0)
+                i++;
+            else if (e[g] == 1)
+                k++;
+        }
+
+        vector<int> m;
+
+        for (int g = 0; g < c; g++) {
+            if (e[g] >= 2)
+                m.push_back(e[g] - 1);
+        }
+
+        int n = m.size();
+
+        vector<vector<long long>> p(i + 1,
+                                    vector<long long>(n + 1, 0));
+
+        p[0][0] = 1;
+
+        for (int g = 0; g < n; g++) {
+            int q = m[g];
+
+            for (int r = i; r >= q; r--) {
+                for (int s = g + 1; s >= 1; s--) {
+                    p[r][s] += p[r - q][s - 1];
+                    p[r][s] %= MOD;
+                }
+            }
+        }
+
+        vector<long long> t(c + 1, 1);
+
+        for (int g = 0; g <= c; g++)
+            t[g] = power(2, g);
+
+        long long u = 0;
+
+        for (int g = 0; g <= i; g++) {
+            long long v = 1;
+
+            for (int r = 0; r < g; r++)
+                v = v * (i - r) % MOD;
+
+            v = 1;
+
+            // C(i,g)
+            long long w = 1;
+
+            for (int r = 1; r <= g; r++) {
+                w = w * (i - r + 1) % MOD;
+                w = w * power(r, MOD - 2) % MOD;
+            }
+
+            for (int r = 0; r <= n; r++) {
+                if (p[g][r] == 0)
+                    continue;
+
+                for (int s = 0; s <= k; s++) {
+                    int x = g + r + s;
+
+                    if (x == 0 || x == c)
+                        continue;
+
+                    long long y = 1;
+
+                    // C(k,s)
+                    y = 1;
+
+                    for (int z = 1; z <= s; z++) {
+                        y = y * (k - z + 1) % MOD;
+                        y = y * power(z, MOD - 2) % MOD;
+                    }
+
+                    long long z = power(x, c - x - 1);
+                    long long h = power(c - x, x - 1);
+
+                    u = (u + p[g][r] * w % MOD *
+                             y % MOD * z % MOD * h) % MOD;
+                }
+            }
+        }
+
+        u = u * power(2, MOD - 2) % MOD;
+
+        cout << u << '\n';
+    }
+
+    return 0;
 }
