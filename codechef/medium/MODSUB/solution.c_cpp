@@ -2,6 +2,84 @@
 using namespace std;
 
 int main() {
-	// your code goes here
+    int a;
+    cin >> a;
 
+    while (a--) {
+        int c;
+        cin >> c;
+
+        vector<long long> e(c);
+
+        for (int g = 0; g < c; g++)
+            cin >> e[g];
+
+        vector<long long> i(c - 1);
+
+        i[0] = e[0];
+
+        for (int g = 1; g < c - 1; g++)
+            i[g] = e[g] - i[g - 1];
+
+        vector<long long> k(c, 1);
+
+        for (int g = 1; g < c; g++)
+            k[g] = k[g - 1] && (i[g - 1] >= 0);
+
+        vector<long long> m(c + 2, (long long)4e18);
+        vector<long long> n(c + 2, (long long)4e18);
+
+        for (int g = c - 2; g >= 0; g--) {
+            if (g % 2 == 0)
+                m[g] = min(i[g], m[g + 2]);
+            else
+                n[g] = min(i[g], n[g + 2]);
+        }
+
+        long long p = e[c - 1] - i[c - 2];
+        int q = 0;
+
+        for (int g = 0; g < c; g++) {
+            if (g > 0 && !k[g])
+                continue;
+
+            long long r;
+
+            if ((c - 2 - g) % 2 == 0)
+                r = p;
+            else
+                r = -p;
+
+            long long s = e[g] + r;
+
+            if (s < 0)
+                continue;
+
+            bool t = true;
+
+            if (g < c - 1) {
+                if (g % 2 == 0) {
+                    if (m[g] + r < 0)
+                        t = false;
+
+                    if (n[g + 1] - r < 0)
+                        t = false;
+                }
+                else {
+                    if (n[g] + r < 0)
+                        t = false;
+
+                    if (m[g + 1] - r < 0)
+                        t = false;
+                }
+            }
+
+            if (t)
+                q++;
+        }
+
+        cout << q << '\n';
+    }
+
+    return 0;
 }
