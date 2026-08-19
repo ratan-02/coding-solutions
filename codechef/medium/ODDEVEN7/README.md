@@ -54,17 +54,42 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T15:15:24.429Z  
+**Submitted:** 2026-08-19T15:15:35.430Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int a;
+    cin >> a;
 
+    while (a--) {
+        int b;
+        cin >> b;
+
+        int c = 0, d = 0;
+
+        for (int e = 0; e < b; e++) {
+            int f;
+            cin >> f;
+
+            if (f % 2 == 0)
+                d++;
+            else
+                c++;
+        }
+
+        int g = min(c, d);
+
+        if (c == d)
+            cout << c + d << endl;
+        else
+            cout << 2 * g + 1 << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
