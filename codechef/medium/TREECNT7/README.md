@@ -60,115 +60,138 @@ Output
 
 ## Solution
 
-**Language:** Python  
+**Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T16:13:53.979Z  
+**Submitted:** 2026-08-19T16:15:36.492Z  
 
-```py
-"""
-Tree Counting Problem Solution
+```c_cpp
+#include <bits/stdc++.h>
+using namespace std;
 
-Key Insight:
-A tree is "good" if and only if for its bipartite coloring, 
-the sum of array values at nodes of one color equals 
-the count of nodes of that color.
+#define MOD 998244353
 
-Why? 
+long long power(long long a, long long b) {
+    long long c = 1;
 
-MOD = 998244353
+    while (b > 0) {
+        if (b & 1)
+            c = c * a % MOD;
 
-def prufer_to_tree(prufer_seq, n):
-    """Convert Prüfer sequence to edge list using standard algorithm"""
-    degree = [1] * (n + 1)  # degree[0] unused, nodes 1 to n
-    
-    for node in prufer_seq:
-        degree[node] += 1
-    
-    edges = []
-    
-    # For each element in Prüfer sequence
-    for node in prufer_seq:
-        # Find the smallest leaf (degree 1)
-        for i in range(1, n + 1):
-            if degree[i] == 1:
-                edges.append((node, i))
-                degree[node] -= 1
-                degree[i] -= 1
-                break
-    
-    # Connect the last two nodes with degree 1
-    remaining = [i for i in range(1, n + 1) if degree[i] == 1]
-    if len(remaining) == 2:
-        edges.append(tuple(remaining))
-    
-    return edges
+        a = a * a % MOD;
+        b >>= 1;
+    }
 
-def bfs_color_tree(n, edges):
-    """2-color the tree using BFS"""
-    adj = [[] for _ in range(n + 1)]
-    for u, v in edges:
-        adj[u].append(v)
-        adj[v].append(u)
-    
-    color = [-1] * (n + 1)
-    color[1] = 0
-    queue = [1]
-    
-    while queue:
-        u = queue.pop(0)
-        for v in adj[u]:
-            if color[v] == -1:
-                color[v] = 1 - color[u]
-                queue.append(v)
-    
-    return color
+    return c;
+}
 
-def is_good_tree(n, edges, A):
-    """
-    Check if tree is good for array A.
-    A tree is good iff sum of A values in one color class 
-    equals the size of that color class.
-    """
-    color = bfs_color_tree(n, edges)
-    
-    # Sum values for nodes of color 0
-    sum_color0 = sum(A[i - 1] for i in range(1, n + 1) if color[i] == 0)
-    count_color0 = sum(1 for i in range(1, n + 1) if color[i] == 0)
-    
-    # Check if one color class is balanced
-    return sum_color0 == count_color0
+int main() {
+    int a;
+    cin >> a;
 
-def solve():
-    T = int(input())
-    
-    for _ in range(T):
-        N = int(input())
-        A = list(map(int, input().split()))
-        
-        # Count good trees
-        from itertools import product
-        
-        if N == 1:
-            print(1)
-            continue
-        
-        if N == 2:
-            print(1)
-            continue
-        
-        count = 0
-        
-        # Generate all possible Prüfer sequences (n^(n-2) total)
-        for prufer_seq in product(range(1, N + 1), repeat=N - 2):
-            edges = prufer_to_tree(list(prufer_seq), N)
-            if is_good_tree(N, edges, A):
-                count += 1
-        
-        print(count % MOD)
+    while (a--) {
+        int c;
+        cin >> c;
 
-if __name__ == "__main__":
-    solve()
+        vector<int> e(c);
+
+        for (int g = 0; g < c; g++)
+            cin >> e[g];
+
+        int i = 0;
+        int k = 0;
+
+        for (int g = 0; g < c; g++) {
+            if (e[g] == 0)
+                i++;
+            else if (e[g] == 1)
+                k++;
+        }
+
+        vector<int> m;
+
+        for (int g = 0; g < c; g++) {
+            if (e[g] >= 2)
+                m.push_back(e[g] - 1);
+        }
+
+        int n = m.size();
+
+        vector<vector<long long>> p(i + 1,
+                                    vector<long long>(n + 1, 0));
+
+        p[0][0] = 1;
+
+        for (int g = 0; g < n; g++) {
+            int q = m[g];
+
+            for (int r = i; r >= q; r--) {
+                for (int s = g + 1; s >= 1; s--) {
+                    p[r][s] += p[r - q][s - 1];
+                    p[r][s] %= MOD;
+                }
+            }
+        }
+
+        vector<long long> t(c + 1, 1);
+
+        for (int g = 0; g <= c; g++)
+            t[g] = power(2, g);
+
+        long long u = 0;
+
+        for (int g = 0; g <= i; g++) {
+            long long v = 1;
+
+            for (int r = 0; r < g; r++)
+                v = v * (i - r) % MOD;
+
+            v = 1;
+
+            // C(i,g)
+            long long w = 1;
+
+            for (int r = 1; r <= g; r++) {
+                w = w * (i - r + 1) % MOD;
+                w = w * power(r, MOD - 2) % MOD;
+            }
+
+            for (int r = 0; r <= n; r++) {
+                if (p[g][r] == 0)
+                    continue;
+
+                for (int s = 0; s <= k; s++) {
+                    int x = g + r + s;
+
+                    if (x == 0 || x == c)
+                        continue;
+
+                    long long y = 1;
+
+                    // C(k,s)
+                    y = 1;
+
+                    for (int z = 1; z <= s; z++) {
+                        y = y * (k - z + 1) % MOD;
+                        y = y * power(z, MOD - 2) % MOD;
+                    }
+
+                    long long z = power(x, c - x - 1);
+                    long long h = power(c - x, x - 1);
+
+                    u = (u + p[g][r] * w % MOD *
+                             y % MOD * z % MOD * h) % MOD;
+                }
+            }
+        }
+
+        u = u * power(2, MOD - 2) % MOD;
+
+        cout << u << '\n';
+    }
+
+    return 0;
+}
 ```
 
 ---
