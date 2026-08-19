@@ -2,6 +2,27 @@
 using namespace std;
 
 int main() {
-	// your code goes here
+    int a;
+    cin >> a;
 
+    while (a--) {
+        int b;
+        cin >> b;
+
+        int c[205];
+        int d = 0;
+
+        for (int e = 0; e < 2 * b; e++) {
+            cin >> c[e];
+        }
+
+        for (int f = 0; f < b; f++) {
+            int g = 2 * b - 1 - f;
+            d += max(c[f], c[g]);
+        }
+
+        cout << d << endl;
+    }
+
+    return 0;
 }
