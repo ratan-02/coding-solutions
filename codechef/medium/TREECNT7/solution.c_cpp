@@ -6,7 +6,7 @@ using namespace std;
 long long power(long long a, long long b) {
     long long c = 1;
 
-    while (b > 0) {
+    while (b) {
         if (b & 1)
             c = c * a % MOD;
 
@@ -18,6 +18,9 @@ long long power(long long a, long long b) {
 }
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int a;
     cin >> a;
 
@@ -27,99 +30,119 @@ int main() {
 
         vector<int> e(c);
 
-        for (int g = 0; g < c; g++)
-            cin >> e[g];
-
+        int g = 0;
         int i = 0;
-        int k = 0;
 
-        for (int g = 0; g < c; g++) {
-            if (e[g] == 0)
+        for (int k = 0; k < c; k++) {
+            cin >> e[k];
+
+            if (e[k] == 0)
+                g++;
+            else if (e[k] == 1)
                 i++;
-            else if (e[g] == 1)
-                k++;
         }
 
-        vector<int> m;
+        vector<int> k;
 
-        for (int g = 0; g < c; g++) {
-            if (e[g] >= 2)
-                m.push_back(e[g] - 1);
+        for (int x : e) {
+            if (x >= 2)
+                k.push_back(x - 1);
         }
 
-        int n = m.size();
+        int m = g;
 
-        vector<vector<long long>> p(i + 1,
-                                    vector<long long>(n + 1, 0));
+        vector<vector<long long>> n(
+            k.size() + 1,
+            vector<long long>(m + 1, 0)
+        );
 
-        p[0][0] = 1;
+        n[0][0] = 1;
 
-        for (int g = 0; g < n; g++) {
-            int q = m[g];
+        int p = 0;
 
-            for (int r = i; r >= q; r--) {
-                for (int s = g + 1; s >= 1; s--) {
-                    p[r][s] += p[r - q][s - 1];
-                    p[r][s] %= MOD;
+        for (int x : k) {
+            p++;
+
+            for (int q = p; q >= 1; q--) {
+                for (int r = m; r >= x; r--) {
+                    n[q][r] += n[q - 1][r - x];
+                    if (n[q][r] >= MOD)
+                        n[q][r] -= MOD;
                 }
             }
         }
 
-        vector<long long> t(c + 1, 1);
+        vector<long long> q(c + 1, 0);
 
-        for (int g = 0; g <= c; g++)
-            t[g] = power(2, g);
+        vector<long long> r(c + 1, 1);
+        vector<long long> s(c + 1, 1);
 
-        long long u = 0;
+        for (int x = 1; x < c; x++) {
+            r[x] = power(x, c - x - 1);
+            s[x] = power(c - x, x - 1);
+        }
 
-        for (int g = 0; g <= i; g++) {
-            long long v = 1;
+        vector<long long> t(c + 1, 0);
 
-            for (int r = 0; r < g; r++)
-                v = v * (i - r) % MOD;
+        t[0] = 1;
 
-            v = 1;
+        for (int x = 1; x <= i; x++) {
+            t[x] = t[x - 1] * (i - x + 1) % MOD;
+            t[x] = t[x] * power(x, MOD - 2) % MOD;
+        }
 
-            // C(i,g)
-            long long w = 1;
+        vector<long long> u(g + 1, 1);
 
-            for (int r = 1; r <= g; r++) {
-                w = w * (i - r + 1) % MOD;
-                w = w * power(r, MOD - 2) % MOD;
-            }
+        for (int x = 1; x <= g; x++) {
+            u[x] = u[x - 1] * (g - x + 1) % MOD;
+            u[x] = u[x] * power(x, MOD - 2) % MOD;
+        }
 
-            for (int r = 0; r <= n; r++) {
-                if (p[g][r] == 0)
+        vector<long long> v(c + 1, 0);
+
+        for (int x = 1; x < c; x++) {
+            long long w = r[x] * s[x] % MOD;
+            v[x] = w;
+        }
+
+        long long w = 0;
+
+        for (int x = 0; x <= (int)k.size(); x++) {
+            for (int y = 0; y <= g; y++) {
+                if (n[x][y] == 0)
                     continue;
 
-                for (int s = 0; s <= k; s++) {
-                    int x = g + r + s;
+                if (y > g)
+                    continue;
 
-                    if (x == 0 || x == c)
+                long long z = u[y];
+
+                for (int h = 0; h <= i; h++) {
+                    int j = x + y + h;
+
+                    if (j <= 0 || j >= c)
                         continue;
 
-                    long long y = 1;
+                    long long aa = t[h];
+                    long long bb = n[x][y];
 
-                    // C(k,s)
-                    y = 1;
+                    long long cc = v[j];
 
-                    for (int z = 1; z <= s; z++) {
-                        y = y * (k - z + 1) % MOD;
-                        y = y * power(z, MOD - 2) % MOD;
-                    }
+                    long long dd = bb * z % MOD;
+                    dd = dd * aa % MOD;
+                    dd = dd * cc % MOD;
 
-                    long long z = power(x, c - x - 1);
-                    long long h = power(c - x, x - 1);
+                    w += dd;
 
-                    u = (u + p[g][r] * w % MOD *
-                             y % MOD * z % MOD * h) % MOD;
+                    if (w >= MOD)
+                        w -= MOD;
                 }
             }
         }
 
-        u = u * power(2, MOD - 2) % MOD;
+        w = w * power(2, MOD - 2) % MOD;
 
-        cout << u << '\n';
+        cout << w << '\n';
     }
 
     return 0;
