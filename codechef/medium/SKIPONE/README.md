@@ -58,17 +58,45 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T15:15:57.472Z  
+**Submitted:** 2026-08-19T15:44:30.425Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int a;
+    cin >> a;
 
+    while (a--) {
+        int c, e;
+        cin >> c >> e;
+
+        vector<int> g(c);
+
+        for (int i = 0; i < c; i++) {
+            cin >> g[i];
+        }
+
+        long long i = 0;
+        int k = 0;
+        int m = 0;
+
+        for (int n = 0; n < c; n++) {
+            i += g[n];
+            m = max(m, g[n]);
+
+            if (i - m <= e)
+                k = n + 1;
+            else
+                break;
+        }
+
+        cout << k << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
