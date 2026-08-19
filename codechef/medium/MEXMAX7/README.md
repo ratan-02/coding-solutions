@@ -61,7 +61,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T16:03:23.289Z  
+**Submitted:** 2026-08-19T16:03:58.310Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -77,7 +77,7 @@ int main() {
         int c;
         cin >> c;
 
-        vector<int> e(c + 1, 0);
+        vector<int> e(c + 2, 0);
 
         for (int g = 0; g < c; g++) {
             int i;
@@ -85,49 +85,35 @@ int main() {
             e[i]++;
         }
 
-        long long k = 0;
-        long long m = 1;
+        vector<long long> k(c + 2, 0);
 
-        for (int n = 0; n <= c; n++) {
-            if (e[n] == 0) {
-                if (n == 0) {
-                    k += 1;
-                }
-                break;
-            }
+        for (int g = 0; g <= c + 1; g++) {
+            k[g] = 1;
 
-            m = m * (1LL * (1 << min(e[n], 30))) % MOD;
+            for (int i = 0; i < e[g]; i++)
+                k[g] = k[g] * 2 % MOD;
+
+            k[g] = (k[g] - 1 + MOD) % MOD;
         }
 
-        long long p = 1;
+        long long m = k[1];
+        long long n = 1;
 
-        for (int n = 0; n <= c; n++) {
-            if (e[n] == 0)
+        for (int g = 1; g <= c; g++) {
+            if (e[g - 1] == 0)
                 break;
 
-            p = p * (1LL * (e[n] + 1)) % MOD;
+            n = n * k[g - 1] % MOD;
+
+            // mex = g, max = g - 1
+            m = (m + n) % MOD;
+
+            // mex = g, max = g + 1
+            if (g + 1 <= c)
+                m = (m + n * k[g + 1]) % MOD;
         }
 
-        k = 0;
-
-        for (int n = 0; n <= c; n++) {
-            if (e[n] == 0)
-                break;
-
-            long long q = 1;
-
-            for (int r = 0; r <= n; r++) {
-                if (e[r] == 0) {
-                    q = 0;
-                    break;
-                }
-                q = q * ((1LL << min(e[r], 30)) - 1) % MOD;
-            }
-
-            k = (k + q) % MOD;
-        }
-
-        cout << k << endl;
+        cout << m << '\n';
     }
 
     return 0;
