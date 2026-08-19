@@ -1,39 +1,34 @@
-from collections import deque
-
 def find_min_sum(arr):
     n = len(arr)
     if n <= 2:
         return sum(arr)
     
-    seen = set()
-    queue = deque()
+    memo = {}
     
-    initial_tuple = tuple(arr)
-    queue.append(initial_tuple)
-    seen.add(initial_tuple)
-    
-    min_sum = sum(arr)
-    
-    while queue:
-        current = queue.popleft()
-        current_sum = sum(current)
-        min_sum = min(min_sum, current_sum)
+    def dfs(state):
+        state_tuple = tuple(state)
+        if state_tuple in memo:
+            return memo[state_tuple]
         
-        current_list = list(current)
+        current_sum = sum(state)
+        min_sum = current_sum
         
+        improved = False
         for i in range(1, n - 1):
-            new_arr = current_list[:]
-            new_arr[i] = current_list[i + 1] + current_list[i - 1] - current_list[i]
-            new_tuple = tuple(new_arr)
+            new_val = state[i + 1] + state[i - 1] - state[i]
+            new_sum = current_sum - state[i] + new_val
             
-            if new_tuple not in seen:
-                seen.add(new_tuple)
-                new_sum = sum(new_arr)
-                if new_sum < min_sum:
-                    queue.append(new_tuple)
-                    min_sum = new_sum
+            if new_sum < min_sum:
+                new_state = state[:]
+                new_state[i] = new_val
+                result = dfs(new_state)
+                min_sum = min(min_sum, result)
+                improved = True
+        
+        memo[state_tuple] = min_sum
+        return min_sum
     
-    return min_sum
+    return dfs(arr)
 
 def solve():
     t = int(input())
