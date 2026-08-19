@@ -6,12 +6,7 @@ A tree is "good" if and only if for its bipartite coloring,
 the sum of array values at nodes of one color equals 
 the count of nodes of that color.
 
-Why? Because:
-1. Every tree is bipartite (2-colorable)
-2. Operations only move values between nodes of the same color
-3. For transformation to [1,1,...,1], we need each color class 
-   to have total value equal to its size
-"""
+Why? 
 
 MOD = 998244353
 
