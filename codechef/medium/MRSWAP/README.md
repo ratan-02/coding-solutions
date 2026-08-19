@@ -56,17 +56,37 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T15:08:12.941Z  
+**Submitted:** 2026-08-19T15:08:16.853Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int a;
+    cin >> a;
 
+    while (a--) {
+        int b;
+        cin >> b;
+
+        int c[205];
+        int d = 0;
+
+        for (int e = 0; e < 2 * b; e++) {
+            cin >> c[e];
+        }
+
+        for (int f = 0; f < b; f++) {
+            int g = 2 * b - 1 - f;
+            d += max(c[f], c[g]);
+        }
+
+        cout << d << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
