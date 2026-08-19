@@ -78,7 +78,7 @@ The string `"snow"` starts with the letter `'s'`, so it is  *snaky*.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T03:28:30.895Z  
+**Submitted:** 2026-08-19T03:29:33.031Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -87,7 +87,7 @@ using namespace std;
 int main() {
 	string s;
 	cin >> s;
-	if(s[3] == 's'){
+	if(s[0] =='s' || s[3] == 's' ){
 	    cout << "YES" ;
 	}
 	else{
