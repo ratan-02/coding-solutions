@@ -78,7 +78,7 @@ The string `"snow"` starts with the letter `'s'`, so it is  *snaky*.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T03:28:16.938Z  
+**Submitted:** 2026-08-19T03:28:30.895Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
