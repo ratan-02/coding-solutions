@@ -69,7 +69,7 @@ Output
 **Language:** Python  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-19T16:33:47.073Z  
+**Submitted:** 2026-08-19T16:33:54.595Z  
 
 ```py
 def find_min_sum(arr):
