@@ -64,7 +64,7 @@ The access code entered does not match the expected one, so you are not granted 
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-25T05:34:04.445Z  
+**Submitted:** 2026-08-25T05:35:04.422Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -73,7 +73,9 @@ using namespace std;
 int main() {
 	string s;
 	cin >> s ;
-	if(s == '')
+	if(s == 'WECNITK'){
+	    cout << ""
+	}
 }
 
 ```
