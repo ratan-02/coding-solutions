@@ -4,10 +4,11 @@ using namespace std;
 int main() {
 	string s;
 	cin >> s ;
-	if(s == 'WECNITK'){
-	    cout << "Welcome to Web Club!"
+	if(s = "WECNITK"){
+	    cout << "Welcome to Web Club!" ;
 	}
 	else{
-	    cout << 
+	    cout << "Access denied" ;
 	}
+return 0;	
 }
