@@ -64,7 +64,7 @@ The access code entered does not match the expected one, so you are not granted 
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-25T05:35:20.437Z  
+**Submitted:** 2026-08-25T05:37:35.169Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -73,12 +73,13 @@ using namespace std;
 int main() {
 	string s;
 	cin >> s ;
-	if(s == 'WECNITK'){
-	    cout << "Welcome to Web Club!"
+	if(s = "WECNITK"){
+	    cout << "Welcome to Web Club!" ;
 	}
 	else{
-	    cout << 
+	    cout << "Access denied" ;
 	}
+return 0;	
 }
 
 ```
