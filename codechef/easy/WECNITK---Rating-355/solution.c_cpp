@@ -5,6 +5,9 @@ int main() {
 	string s;
 	cin >> s ;
 	if(s == 'WECNITK'){
-	    cout << ""
+	    cout << "Welcome to Web Club!"
+	}
+	else{
+	    cout << 
 	}
 }
