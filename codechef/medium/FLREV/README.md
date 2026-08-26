@@ -73,17 +73,55 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T14:37:50.938Z  
+**Submitted:** 2026-08-26T15:18:34.738Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int x;
+    cin >> x;
 
+    while (x--) {
+        int n;
+        string a;
+
+        cin >> n >> a;
+
+        int z = 0;
+
+        for (int i = 0; i < n - 1; i++) {
+            if (a[i] == a[i + 1]) {
+                z++;
+            }
+        }
+
+        int ans = z;
+
+        for (int l = 0; l < n; l++) {
+            for (int r = l; r < n; r++) {
+                string b = a;
+
+                reverse(b.begin() + l, b.begin() + r + 1);
+
+                int p = 0;
+
+                for (int i = 0; i < n - 1; i++) {
+                    if (b[i] == b[i + 1]) {
+                        p++;
+                    }
+                }
+
+                ans = max(ans, p);
+            }
+        }
+
+        cout << ans << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
