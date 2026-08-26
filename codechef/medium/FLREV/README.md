@@ -73,7 +73,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T15:18:34.738Z  
+**Submitted:** 2026-08-26T15:19:53.681Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -90,32 +90,16 @@ int main() {
         cin >> n >> a;
 
         int z = 0;
+        int b = 0;
 
         for (int i = 0; i < n - 1; i++) {
-            if (a[i] == a[i + 1]) {
+            if (a[i] == a[i + 1])
                 z++;
-            }
+            else
+                b++;
         }
 
-        int ans = z;
-
-        for (int l = 0; l < n; l++) {
-            for (int r = l; r < n; r++) {
-                string b = a;
-
-                reverse(b.begin() + l, b.begin() + r + 1);
-
-                int p = 0;
-
-                for (int i = 0; i < n - 1; i++) {
-                    if (b[i] == b[i + 1]) {
-                        p++;
-                    }
-                }
-
-                ans = max(ans, p);
-            }
-        }
+        int ans = z + min(2, max(0, b - 1));
 
         cout << ans << endl;
     }
