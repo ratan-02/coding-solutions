@@ -65,17 +65,40 @@ For the given costs, this is optimal.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T14:37:06.905Z  
+**Submitted:** 2026-08-26T14:45:53.649Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int x;
+    cin >> x;
 
+    while (x--) {
+        int a, b, p, q, r;
+        cin >> a >> b >> p >> q >> r;
+
+        int z = min(a, b);
+
+        long long ans = 1e18;
+
+        for (int i = 0; i <= z; i++) {
+            int m = a - i;
+            int n = b - i;
+
+            long long c1 = (m + 1) / 2 * p;
+            long long c2 = (n + 1) / 2 * q;
+            long long c3 = i * r;
+
+            ans = min(ans, c1 + c2 + c3);
+        }
+
+        cout << ans << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
