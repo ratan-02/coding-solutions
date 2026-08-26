@@ -85,17 +85,75 @@ The score of the first group is $\max(A_1, A_4) = 6$ while the score of the seco
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T15:20:13.053Z  
+**Submitted:** 2026-08-26T15:22:17.552Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
+    int x;
+    cin >> x;
+
+    while (x--) {
+        int n;
+        cin >> n;
+
+        vector<long long> a(n);
+
+        for (int i = 0; i < n; i++) {
+            cin >> a[i];
+        }
+
+        string s;
+        cin >> s;
+
+        int z = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (s[i] != s[(i + 1) % n]) {
+                z++;
+            }
+        }
+
+        if (z == 2) {
+            long long p = 0;
+            long long q = 0;
+
+            for (int i = 0; i < n; i++) {
+                if (s[i] == '0') {
+                    p = max(p, a[i]);
+                }
+                else {
+                    q = max(q, a[i]);
+                }
+            }
+
+            cout << p + q << '\n';
+        }
+        else {
+            long long p = 0;
+            long long q = 0;
+
+            for (int i = 0; i < n; i++) {
+                if (a[i] >= p) {
+                    q = p;
+                    p = a[i];
+                }
+                else if (a[i] > q) {
+                    q = a[i];
+                }
+            }
+
+            cout << p + q << '\n';
+        }
+    }
+
+    return 0;
 }
-
 ```
 
 ---
