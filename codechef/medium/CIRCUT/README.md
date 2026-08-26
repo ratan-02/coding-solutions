@@ -85,7 +85,7 @@ The score of the first group is $\max(A_1, A_4) = 6$ while the score of the seco
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T15:22:17.552Z  
+**Submitted:** 2026-08-26T15:22:37.040Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
