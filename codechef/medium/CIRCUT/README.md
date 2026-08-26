@@ -85,7 +85,7 @@ The score of the first group is $\max(A_1, A_4) = 6$ while the score of the seco
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T15:22:37.040Z  
+**Submitted:** 2026-08-26T15:29:18.266Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -111,45 +111,60 @@ int main() {
         string s;
         cin >> s;
 
-        int z = 0;
+        int p = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (a[i] > a[p]) {
+                p = i;
+            }
+        }
+
+        int z = 0, q = 0;
 
         for (int i = 0; i < n; i++) {
-            if (s[i] != s[(i + 1) % n]) {
-                z++;
+            int j = (i + 1) % n;
+
+            if (s[i] != s[j]) {
+                if (s[i] == '0')
+                    z++;
+                else
+                    q++;
             }
         }
 
-        if (z == 2) {
-            long long p = 0;
-            long long q = 0;
+        int b0 = 0, b1 = 0;
+        long long ans = 0;
 
-            for (int i = 0; i < n; i++) {
-                if (s[i] == '0') {
-                    p = max(p, a[i]);
-                }
-                else {
-                    q = max(q, a[i]);
-                }
+        for (int k = 1; k < n; k++) {
+            int id = (p + k - 1) % n;
+            int nx = (id + 1) % n;
+
+            if (s[id] != s[nx]) {
+                if (s[id] == '0')
+                    b0++;
+                else
+                    b1++;
             }
 
-            cout << p + q << '\n';
-        }
-        else {
-            long long p = 0;
-            long long q = 0;
+            int c0 = z - b0;
+            int c1 = q - b1;
 
-            for (int i = 0; i < n; i++) {
-                if (a[i] >= p) {
-                    q = p;
-                    p = a[i];
-                }
-                else if (a[i] > q) {
-                    q = a[i];
-                }
+            bool ok = false;
+
+            if (b0 > 0 && c1 > 0)
+                ok = true;
+
+            if (b1 > 0 && c0 > 0)
+                ok = true;
+
+            int pos = (p + k) % n;
+
+            if (ok) {
+                ans = max(ans, a[pos]);
             }
-
-            cout << p + q << '\n';
         }
+
+        cout << a[p] + ans << '\n';
     }
 
     return 0;
