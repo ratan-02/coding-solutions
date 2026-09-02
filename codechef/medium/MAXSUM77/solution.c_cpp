@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int xq;
+    cin >> xq;
+
+    while (xq--) {
+        int mz, rp;
+        cin >> mz >> rp;
+
+        vector<int> kf(mz);
+        int ty = 0;
+
+        for (int bv = 0; bv < mz; bv++) {
+            cin >> kf[bv];
+            ty += kf[bv];
+        }
+
+        int qa = 0;
+
+        for (int wn = 0; wn <= rp; wn++) {
+            int jd = rp - wn;
+            int lx = 0;
+
+            for (int cs = wn; cs < mz - jd; cs++) {
+                lx += kf[cs];
+            }
+
+            qa = max(qa, lx);
+        }
+
+        cout << qa << endl;
+    }
+
+    return 0;
+}
