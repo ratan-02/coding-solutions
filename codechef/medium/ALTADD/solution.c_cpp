@@ -22,7 +22,7 @@ int main() {
         for (int i = 1; i < N; i++)
             ans += abs(A[i] + A[i - 1]);
 
-        cout << ans / 2 << '\n';
+        cout << ans / 2 << endl;
     }
 
     return 0;
