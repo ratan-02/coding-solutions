@@ -53,31 +53,19 @@ Output
 
 ## Solution
 
-**Language:** c_cpp  
+**Language:** Python  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:54:50.192Z  
+**Submitted:** 2026-09-02T15:57:23.587Z  
 
-```c_cpp
-#include <iostream>
-using namespace std;
-
-int main() {
-    int T;
-    cin >> T;
-
-    while (T--) {
-        long long N;
-        cin >> N;
-
-        if (N == 1)
-            cout << 1 << '\n';
-        else
-            cout << 3 * ((N + 2) / 3) + 1 << '\n';
-    }
-
-    return 0;
-}
+```py
+T = int(input())
+for _ in range(T):
+    N = int(input())
+    # Maximum rounds = ceiling((4*N - 1) / 3)
+    # Which equals (4*N + 2) // 3
+    result = (4 * N + 2) // 3
+    print(result)
 ```
 
 ---
