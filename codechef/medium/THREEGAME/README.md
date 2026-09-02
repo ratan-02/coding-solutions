@@ -56,7 +56,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:57:38.111Z  
+**Submitted:** 2026-09-02T16:04:48.123Z  
 
 ```c_cpp
 #include <iostream>
@@ -77,7 +77,7 @@ int main() {
             answer = N + 1;
         } else if (remainder == 1) {
             answer = N;
-        } else {  // remainder == 2
+        } else {  
             answer = N + 2;
         }
         
