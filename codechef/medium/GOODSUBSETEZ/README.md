@@ -54,41 +54,17 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:25:28.821Z  
+**Submitted:** 2026-09-02T15:18:32.103Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    int qz;
-    cin >> qz;
+	// your code goes here
 
-    while (qz--) {
-        int hm;
-        cin >> hm;
-
-        vector<int> vr(hm);
-        vector<int> px(31, 0);
-
-        for (int nk = 0; nk < hm; nk++) {
-            cin >> vr[nk];
-
-            int ds = 31 - __builtin_clz(vr[nk]);
-            px[ds]++;
-        }
-
-        int wt = 0;
-
-        for (int jf = 0; jf < 31; jf++) {
-            wt = max(wt, px[jf]);
-        }
-
-        cout << wt << endl;
-    }
-
-    return 0;
 }
+
 ```
 
 ---
