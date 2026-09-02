@@ -2,6 +2,31 @@
 using namespace std;
 
 int main() {
-	// your code goes here
+    int qz;
+    cin >> qz;
 
+    while (qz--) {
+        int hm;
+        cin >> hm;
+
+        vector<int> vr(hm);
+        vector<int> px(31, 0);
+
+        for (int nk = 0; nk < hm; nk++) {
+            cin >> vr[nk];
+
+            int ds = 31 - __builtin_clz(vr[nk]);
+            px[ds]++;
+        }
+
+        int wt = 0;
+
+        for (int jf = 0; jf < 31; jf++) {
+            wt = max(wt, px[jf]);
+        }
+
+        cout << wt << endl;
+    }
+
+    return 0;
 }
