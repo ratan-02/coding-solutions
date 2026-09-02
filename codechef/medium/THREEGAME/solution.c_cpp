@@ -1,7 +1,21 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int qx;
+    cin >> qx;
 
+    while (qx--) {
+        long long mn;
+        cin >> mn;
+
+        if (mn == 1)
+            cout << 1 << endl;
+        else if (mn % 3 == 2)
+            cout << mn + 2 << endl;
+        else
+            cout << mn + 1 << endl;
+    }
+
+    return 0;
 }
