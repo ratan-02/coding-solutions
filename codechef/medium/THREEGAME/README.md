@@ -56,17 +56,30 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:26:00.211Z  
+**Submitted:** 2026-09-02T15:39:57.096Z  
 
 ```c_cpp
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int qx;
+    cin >> qx;
 
+    while (qx--) {
+        long long mn;
+        cin >> mn;
+
+        if (mn == 1)
+            cout << 1 << endl;
+        else if (mn % 3 == 2)
+            cout << mn + 2 << endl;
+        else
+            cout << mn + 1 << endl;
+    }
+
+    return 0;
 }
-
 ```
 
 ---
