@@ -56,7 +56,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T16:04:48.123Z  
+**Submitted:** 2026-09-02T16:06:57.546Z  
 
 ```c_cpp
 #include <iostream>
@@ -65,25 +65,17 @@ using namespace std;
 int main() {
     int T;
     cin >> T;
-    
-    while(T--) {
+
+    while (T--) {
         long long N;
         cin >> N;
-        
-        long long remainder = N % 3;
-        long long answer;
-        
-        if (remainder == 0) {
-            answer = N + 1;
-        } else if (remainder == 1) {
-            answer = N;
-        } else {  
-            answer = N + 2;
-        }
-        
-        cout << answer << endl;
+
+        if (N % 2 == 0)
+            cout << 3 * N / 2 + 1 << '\n';
+        else
+            cout << (3 * N - 1) / 2 << '\n';
     }
-    
+
     return 0;
 }
 ```
