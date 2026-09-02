@@ -2,17 +2,19 @@
 using namespace std;
 
 int main() {
-    int T;
-    cin >> T;
+    int qx;
+    cin >> qx;
 
-    while (T--) {
-        long long N;
-        cin >> N;
+    while (qx--) {
+        long long mn;
+        cin >> mn;
 
-        if (N == 1)
-            cout << 1 << '\n';
+        if (mn == 1)
+            cout << 1 << endl;
+        else if (mn % 3 == 2)
+            cout << mn + 2 << endl;
         else
-            cout << 3 * ((N + 2) / 3) + 1 << '\n';
+            cout << mn + 1 << endl;
     }
 
     return 0;
