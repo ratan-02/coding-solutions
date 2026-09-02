@@ -56,7 +56,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:54:03.066Z  
+**Submitted:** 2026-09-02T15:53:04.447Z  
 
 ```c_cpp
 #include <iostream>
@@ -71,9 +71,11 @@ int main() {
         cin >> N;
 
         if (N == 1)
-            cout << 1 << '\n';
+            cout << 1 << endl;
+        else if (N % 3 == 0)
+            cout << N + 1 << endl;
         else
-            cout << 3 * ((N + 2) / 3) + 1 << '\n';
+            cout << N + 2 << endl;
     }
 
     return 0;
