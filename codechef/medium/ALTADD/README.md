@@ -66,7 +66,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:50:16.590Z  
+**Submitted:** 2026-09-02T15:53:04.154Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -93,7 +93,7 @@ int main() {
         for (int i = 1; i < N; i++)
             ans += abs(A[i] + A[i - 1]);
 
-        cout << ans / 2 << '\n';
+        cout << ans / 2 << endl;
     }
 
     return 0;
