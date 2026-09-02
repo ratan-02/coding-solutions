@@ -56,26 +56,24 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:51:17.131Z  
+**Submitted:** 2026-09-02T15:54:36.137Z  
 
 ```c_cpp
 #include <iostream>
 using namespace std;
 
 int main() {
-    int qx;
-    cin >> qx;
+    int T;
+    cin >> T;
 
-    while (qx--) {
-        long long mn;
-        cin >> mn;
+    while (T--) {
+        long long N;
+        cin >> N;
 
-        if (mn == 1)
-            cout << 1 << endl;
-        else if (mn % 3 == 2)
-            cout << mn + 2 << endl;
+        if (N == 1)
+            cout << 1 << '\n';
         else
-            cout << mn + 1 << endl;
+            cout << 3 * ((N + 2) / 3) + 1 << '\n';
     }
 
     return 0;
