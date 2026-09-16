@@ -56,17 +56,35 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-16T15:20:37.313Z  
+**Submitted:** 2026-09-16T15:25:24.764Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int t;
+    cin >> t;
 
+    while (t--) {
+        int n;
+        cin >> n;
+
+        long long sum = 0, mx = 0;
+
+        for (int z = 0; z < n; z++) {
+            long long v;
+            cin >> v;
+
+            sum += v;
+            mx = max(mx, v);
+        }
+
+        cout << sum + mx * (n - 2) << '\n';
+    }
+
+    return 0;
 }
-
 ```
 
 ---
