@@ -56,17 +56,47 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-16T15:20:58.707Z  
+**Submitted:** 2026-09-16T15:33:59.139Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int q;
+    cin >> q;
 
+    while (q--) {
+        int n;
+        cin >> n;
+
+        vector<int> a(n);
+
+        for (int x = 0; x < n; x++)
+            cin >> a[x];
+
+        // Try to move every element as far left as possible
+        for (int i = 1; i < n; i++) {
+            int z = i;
+
+            while (z > 0 && abs(a[z] - a[z - 1]) > 1) {
+                if (a[z] < a[z - 1]) {
+                    swap(a[z], a[z - 1]);
+                    z--;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        for (int x = 0; x < n; x++)
+            cout << a[x] << " ";
+
+        cout << '\n';
+    }
+
+    return 0;
 }
-
 ```
 
 ---
