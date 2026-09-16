@@ -56,7 +56,7 @@ Output
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-16T15:25:38.175Z  
+**Submitted:** 2026-09-16T15:26:21.499Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
@@ -70,17 +70,34 @@ int main() {
         int n;
         cin >> n;
 
-        long long sum = 0, mx = 0;
+        vector<long long> a(n);
 
-        for (int z = 0; z < n; z++) {
-            long long v;
-            cin >> v;
+        for (int i = 0; i < n; i++)
+            cin >> a[i];
 
-            sum += v;
-            mx = max(mx, v);
+        sort(a.begin(), a.end());
+
+        long long total = 0;
+
+        for (auto x : a)
+            total += x;
+
+        long long ans = 0;
+        long long redSum = 0;
+
+        for (int red = 1; red < n; red++) {
+            redSum += a[n - red];
+
+            long long blueSum = total - redSum;
+            long long blueCnt = n - red;
+
+            long long cur = redSum * blueCnt
+                          + blueSum * red;
+
+            ans = max(ans, cur);
         }
 
-        cout << sum + mx * (n - 2) << '\n';
+        cout << ans << '\n';
     }
 
     return 0;
