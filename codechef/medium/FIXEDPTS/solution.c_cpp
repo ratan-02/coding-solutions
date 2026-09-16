@@ -2,6 +2,18 @@
 using namespace std;
 
 int main() {
-	// your code goes here
+    int q;
+    cin >> q;
 
+    while (q--) {
+        int x, y;
+        cin >> x >> y;
+
+        if (y == x || x - y >= 2)
+            cout << "Yes\n";
+        else
+            cout << "No\n";
+    }
+
+    return 0;
 }
