@@ -55,17 +55,28 @@ Yes
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-16T15:19:42.297Z  
+**Submitted:** 2026-09-16T15:22:34.649Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-	// your code goes here
+    int q;
+    cin >> q;
 
+    while (q--) {
+        int x, y;
+        cin >> x >> y;
+
+        if (y == x || x - y >= 2)
+            cout << "Yes\n";
+        else
+            cout << "No\n";
+    }
+
+    return 0;
 }
-
 ```
 
 ---
