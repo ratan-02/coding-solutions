@@ -36,8 +36,8 @@ Output: [1,2,3]
 
 **Language:** C++  
 **Runtime:** 0 ms  
-**Memory:** 8.2 MB  
-**Submitted:** 2026-10-28T08:51:12.344Z  
+**Memory:** 8.3 MB  
+**Submitted:** 2026-10-28T08:51:54.128Z  
 
 ```cpp
 class Solution {
@@ -48,9 +48,8 @@ public:
         while (curr != nullptr && curr->next != nullptr) {
             if (curr->val == curr->next->val) {
                 curr->next = curr->next->next;
-            } 
-            else{
-                return 0;
+            } else {
+                curr = curr->next;
             }
         }
 
