@@ -46,9 +46,9 @@ trie.search("app");     // return True
 ## Solution
 
 **Language:** C++  
-**Runtime:** 31 ms (beats 71.48%)  
+**Runtime:** 33 ms (beats 67.09%)  
 **Memory:** 50.6 MB (beats 31.04%)  
-**Submitted:** 2026-11-26T07:06:43.201Z  
+**Submitted:** 2026-11-26T07:06:49.529Z  
 
 ```cpp
 class Trie {
